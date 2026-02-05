@@ -1,3 +1,47 @@
-# ticket-reselling-ai
+# Ticket Reselling AI — MVP Foundation
 
-MVP foundation in progress.
+Decision-support system for ticket reselling. This MVP exposes basic API endpoints, a minimal dashboard, and a scheduler stub that writes sample price snapshots every 10 minutes.
+
+## Requirements
+- Python 3.11+
+- SQLite (default) or PostgreSQL
+
+## Setup
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Environment variables
+- `DATABASE_URL` (optional): SQLAlchemy database URL. Defaults to `sqlite:///./app.db`.
+
+Example for PostgreSQL:
+```
+DATABASE_URL=postgresql+psycopg2://user:password@localhost:5432/ticket_reselling
+```
+
+## Database migrations
+```bash
+alembic upgrade head
+```
+
+## Run the API
+```bash
+uvicorn app.main:app --reload
+```
+
+Endpoints:
+- `GET /health`
+- `GET /events` (reads from DB)
+- `GET /recommendations` (stub)
+- `GET /` dashboard page listing events
+
+## Scheduler stub
+On startup, the API schedules a background job every 10 minutes that writes a sample price snapshot and seeds a sample event/listing if needed.
+
+## Testing
+```bash
+ruff check .
+pytest
+```
