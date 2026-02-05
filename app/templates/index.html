@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Reselling AI</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+        text-align: left;
+      }
+      th {
+        background: #f4f4f4;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Events</h1>
+    <p>Live data from the API.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Venue</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="events"></tbody>
+    </table>
+
+    <script>
+      async function loadEvents() {
+        const response = await fetch("/events");
+        const events = await response.json();
+        const tbody = document.getElementById("events");
+        tbody.innerHTML = "";
+        events.forEach((event) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${event.name}</td>
+            <td>${event.venue}</td>
+            <td>${new Date(event.event_date).toLocaleString()}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+
+      loadEvents();
+    </script>
+  </body>
+</html>
