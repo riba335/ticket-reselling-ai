@@ -33,6 +33,9 @@ def _seed_listing(db: Session) -> models.Listing:
             name="Sample Concert",
             venue="Demo Arena",
             event_date=datetime.now(timezone.utc),
+            source="manual",
+            external_id="sample-concert",
+            source_url=None,
         )
         db.add(event)
         db.flush()
@@ -84,6 +87,13 @@ async def recommendations() -> dict[str, str]:
         "status": "stub",
         "message": "Recommendation engine will return BUY/SKIP decisions here.",
     }
+
+
+@app.get("/collector/status", response_model=dict[str, list[schemas.CollectorRunOut]])
+async def collector_status(
+    limit: int = 5, db: Session = Depends(get_db)
+) -> dict[str, list[schemas.CollectorRunOut]]:
+    return crud.get_collector_runs_by_source(db, limit)
 
 
 @app.get("/", response_class=HTMLResponse)
