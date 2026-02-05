@@ -15,6 +15,8 @@ pip install -r requirements.txt
 
 ## Environment variables
 - `DATABASE_URL` (optional): SQLAlchemy database URL. Defaults to `sqlite:///./app.db`.
+- `EXAMPLE_API_KEY` (optional): API key for the ExampleCollector (official API placeholder).
+- `EXAMPLE_API_BASE_URL` (optional): Override ExampleCollector base URL (defaults to `https://api.example.com/v1/events`).
 
 Example for PostgreSQL:
 ```
@@ -35,10 +37,17 @@ Endpoints:
 - `GET /health`
 - `GET /events` (reads from DB)
 - `GET /recommendations` (stub)
+- `GET /collector/status` (recent collector runs per source)
 - `GET /` dashboard page listing events
 
 ## Scheduler stub
 On startup, the API schedules a background job every 10 minutes that writes a sample price snapshot and seeds a sample event/listing if needed.
+
+## Collector worker
+Run the collector loop every 10 minutes via APScheduler:
+```bash
+python -m app.worker
+```
 
 ## Testing
 ```bash

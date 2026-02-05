@@ -1,9 +1,4 @@
-import sys
-from pathlib import Path
-
 from fastapi.testclient import TestClient
-
-sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from app import main  # noqa: E402
 
